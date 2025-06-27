@@ -7,7 +7,7 @@ function Homepage() {
       <PageNav />
       <h1>WorldWise</h1>
 
-      <Link to="/Pricing">Pricing</Link>
+      <Link to="/AppLayout">Go to the app</Link>
     </div>
   );
 }
