@@ -7,6 +7,7 @@ function Homepage() {
     <div>
       <PageNav />
       <AppNav />
+
       <h1>WorldWise</h1>
 
       <Link to="/AppLayout">Go to the app</Link>
