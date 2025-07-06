@@ -1,13 +1,15 @@
 import styles from "./Sidebar.module.css";
 import Logo from "./Logo";
 import AppNav from "./AppNav";
-function Sidebar() {
+
+function Sidbar() {
   return (
     <div className={styles.sidebar}>
       <Logo />
-
+      {/* Pour la barre de Menu */}
       <AppNav />
-      <p>List of cities</p>
+      <Outlet />
+
       <footer className={styles.footer}>
         <p className={styles.copyright}>
           Copyright {new Date().getFullYear()} by WorldWise Inc.
@@ -17,4 +19,4 @@ function Sidebar() {
   );
 }
 
-export default Sidebar;
+export default Sidbar;
