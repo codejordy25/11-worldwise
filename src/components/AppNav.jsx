@@ -5,6 +5,12 @@ import styles from "./AppNav.module.css";
 
 function AppNav() {
   //styles.nav C'est Pour Lier un objet à un style
+  //avec Navlink nous naviguons vers une autre page mais de manière déclérative
+  //------------------------------------------------------------------------------->
+  //Mais avec useNavigate, nous naviguons de manière impérative
+  //NavLink est un composant de react-router-dom qui permet de créer des liens de navigation
+  //Il est similaire à Link, mais il ajoute des classes CSS actives aux liens en fonction de l'URL actuelle
+
   return (
     <nav className={styles.nav}>
       <ul>
