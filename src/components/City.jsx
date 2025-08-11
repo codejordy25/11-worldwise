@@ -1,7 +1,9 @@
-import { useParams, useSearchParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useEffect } from "react";
-import styles from "./City.module.css";
 import { useCities } from "../contexts/CitiesContext";
+import Spinner from "./Spinner";
+import BackButton from "./BackButton";
+import styles from "./City.module.css";
 
 const formatDate = (date) =>
   new Intl.DateTimeFormat("en", {
@@ -13,35 +15,14 @@ const formatDate = (date) =>
 
 function City() {
   const { id } = useParams(); // This will give us access to the URL parameters, such as the city ID
-  const { currentCity, getCity } = useCities(); // Assuming you have a context or state management to get the current city data
+  const { getCity, currentCity, isLoading } = useCities(); // Assuming you have a context or state management to get the current city data
 
   useEffect(() => {
     getCity(id); // Fetch the city data when the component mounts
-  }, [id, getCity]); // Dependency array to re-fetch if id changes
-
-  // TEMP DATA
-  // const currentCity = {
-  //   cityName: "Lisbon",
-  //   emoji: "🇵🇹",
-  //   date: "2027-10-31T15:59:59.138Z",
-  //   notes: "My favorite city so far!",
-  // };
+  }, [id]); // Dependency array to re-fetch if id changes
 
   const { cityName, emoji, date, notes } = currentCity;
-
-  const [searhParams, setSearchParams] = useSearchParams();
-  const lat = searhParams.get("lat");
-  const lng = searhParams.get("lng");
-
-  // Ancien return
-  // return (
-  //   <>
-  //     <h1>City {id}</h1>{" "}
-  //     <p>
-  //       Position: {lat}, {lng}
-  //     </p>
-  //   </>
-  // );
+  if (isLoading) return <Spinner />;
 
   return (
     <div className={styles.city}>
@@ -75,7 +56,10 @@ function City() {
         </a>
       </div>
 
-      <div></div>
+      <div>
+        {" "}
+        <BackButton />
+      </div>
     </div>
   );
 }
