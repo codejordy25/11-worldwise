@@ -11,13 +11,13 @@ import styles from "./Map.module.css";
 import { useEffect, useState } from "react";
 import { useCities } from "../contexts/CitiesContext";
 import { useGeolocation } from "../hooks/useGeolocation";
+import { useUrlPosition } from "../hooks/useUrlPosition";
 import Button from "./Button";
 
 function Map() {
   //acceder au formulaire lorsque nous cliquons quelque part sur la carte
 
   const { cities } = useCities();
-  const [searhParams, setSearchParams] = useSearchParams();
   const [mapPosition, setMapPosition] = useState([40, 0]);
 
   const {
@@ -26,8 +26,7 @@ function Map() {
     getPosition,
   } = useGeolocation();
 
-  const mapLat = searhParams.get("lat");
-  const mapLng = searhParams.get("lng");
+  const [mapLat, mapLng] = useUrlPosition();
 
   {
     /* synchroniser les deux valeurs */
