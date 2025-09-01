@@ -1,4 +1,4 @@
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import {
   MapContainer,
   TileLayer,
@@ -10,6 +10,8 @@ import {
 import styles from "./Map.module.css";
 import { useEffect, useState } from "react";
 import { useCities } from "../contexts/CitiesContext";
+import { useGeolocation } from "../hooks/useGeolocation";
+import Button from "./Button";
 
 function Map() {
   //acceder au formulaire lorsque nous cliquons quelque part sur la carte
@@ -17,6 +19,13 @@ function Map() {
   const { cities } = useCities();
   const [searhParams, setSearchParams] = useSearchParams();
   const [mapPosition, setMapPosition] = useState([40, 0]);
+
+  const {
+    isLoading: isLoadingPosiiton,
+    position: geolocationPosition,
+    getPosition,
+  } = useGeolocation();
+
   const mapLat = searhParams.get("lat");
   const mapLng = searhParams.get("lng");
 
@@ -28,11 +37,28 @@ function Map() {
       setMapPosition([mapLat, mapLng]);
     }
   }, [mapLat, mapLng]);
+  useEffect(() => {
+    if (mapLat && mapLng) {
+      setMapPosition([mapLat, mapLng]);
+    }
+  }, [mapLat, mapLng]);
+
+  useEffect(() => {
+    if (geolocationPosition) {
+      setMapPosition([geolocationPosition.lat, geolocationPosition.lng]);
+    }
+  }, [geolocationPosition]);
 
   return (
     //dans cette on ne pouvait pas utiliser le lien ou une focntion de navigation
     //car nous n'avons pas de composant de navigation
     <div className={styles.mapContainer}>
+      {!geolocationPosition && (
+        <Button type="position" onClick={getPosition}>
+          {isLoadingPosiiton ? "Loading..." : "Use Your Position"}
+        </Button>
+      )}
+
       <MapContainer
         center={mapPosition}
         // center={[mapLat, mapLng]}
