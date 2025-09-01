@@ -39,8 +39,35 @@ function CitiesProvider({ children }) {
     }
   }
 
+  //NECESSAIRE POUR LES MISES LIEES AUX VILES ET ETATS
+  async function createCity(newCity) {
+    try {
+      setIsLoading(true);
+      const res = await fetch(`${BASE_URL}/cities`, {
+        //Mise Jour du server, Càd,l'etat distant
+        method: "POST",
+        body: JSON.stringify(newCity),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await res.json();
+
+      // Synchronisé la creation du NewCity avec UI
+      //Ok Pour les PApp mais dans les grandes App Il faut React Query
+      //Nous Upadate Egalement le UI (Newobjet s'affiche)
+      setCities((cities) => [...cities, data]);
+    } catch {
+      alert("there was an error in Loading page...");
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   return (
-    <CitiesContext.Provider value={{ cities, isLoading, currentCity, getCity }}>
+    <CitiesContext.Provider
+      value={{ cities, isLoading, currentCity, getCity, createCity }}
+    >
       {children}
     </CitiesContext.Provider>
   );
