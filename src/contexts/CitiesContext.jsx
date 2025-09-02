@@ -58,7 +58,24 @@ function CitiesProvider({ children }) {
       //Nous Upadate Egalement le UI (Newobjet s'affiche)
       setCities((cities) => [...cities, data]);
     } catch {
-      alert("there was an error in Loading page...");
+      alert("there was an error in creating City.");
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  async function deleteCity(id) {
+    try {
+      setIsLoading(true);
+      await fetch(`${BASE_URL}/cities/${id}`, {
+        //Mise Jour du server, Càd,l'etat distant
+        method: "DELETE",
+      });
+
+      // Synchronisé la suppression du NewCity avec UI
+      setCities((cities) => cities.filter((city) => city.id !== id));
+    } catch {
+      alert("there was an error in deleting city.");
     } finally {
       setIsLoading(false);
     }
@@ -66,7 +83,14 @@ function CitiesProvider({ children }) {
 
   return (
     <CitiesContext.Provider
-      value={{ cities, isLoading, currentCity, getCity, createCity }}
+      value={{
+        cities,
+        isLoading,
+        currentCity,
+        getCity,
+        createCity,
+        deleteCity,
+      }}
     >
       {children}
     </CitiesContext.Provider>
