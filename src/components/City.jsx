@@ -19,7 +19,7 @@ function City() {
 
   useEffect(() => {
     getCity(id); // Fetch the city data when the component mounts
-  }, [id]); // Dependency array to re-fetch if id changes
+  }, [id, getCity]); // Dependency array to re-fetch if id changes
 
   const { cityName, emoji, date, notes } = currentCity;
   if (isLoading) return <Spinner />;

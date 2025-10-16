@@ -4,6 +4,7 @@ import {
   useEffect,
   useContext,
   useReducer,
+  useCallback,
 } from "react";
 
 const BASE_URL = "http://localhost:9000";
@@ -90,22 +91,25 @@ function CitiesProvider({ children }) {
   }, []);
 
   //NECESSAIRE POUR LES MISES LIEES AUX VILES ET ETATS
-  async function getCity(id) {
-    if (Number(id) === currentCity.id) return; //Eviter les fetch redondants
-    dispatch({ type: "loading" });
-    try {
+  const getCity = useCallback(
+    async function getCity(id) {
+      if (Number(id) === currentCity.id) return; //Eviter les fetch redondants
       dispatch({ type: "loading" });
-      const res = await fetch(`${BASE_URL}/cities/${id}`);
+      try {
+        dispatch({ type: "loading" });
+        const res = await fetch(`${BASE_URL}/cities/${id}`);
 
-      const data = await res.json();
-      dispatch({ type: "city/loaded", payload: data });
-    } catch {
-      dispatch({
-        type: "rejected",
-        payload: "there was an error in Loading City...",
-      });
-    }
-  }
+        const data = await res.json();
+        dispatch({ type: "city/loaded", payload: data });
+      } catch {
+        dispatch({
+          type: "rejected",
+          payload: "there was an error in Loading City...",
+        });
+      }
+    },
+    [currentCity.id]
+  );
 
   //NECESSAIRE POUR LES MISES LIEES AUX VILES ET ETATS
   async function createCity(newCity) {
