@@ -15,7 +15,7 @@ function User() {
 
   function handleClick() {
     logout();
-    navigate("/");
+    navigate("/app");
   }
 
   return (
